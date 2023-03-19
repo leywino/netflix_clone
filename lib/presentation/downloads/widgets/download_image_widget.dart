@@ -34,8 +34,10 @@ class DownloadImageRotate extends StatelessWidget {
           height: size.width * downloadHeight!,
           width: size.width * downloadWidth!,
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
             color: kBlackColor,
             image: DecorationImage(
+              fit: BoxFit.cover,
               image: NetworkImage(_pics[index!]),
             ),
           ),

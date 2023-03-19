@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:netflix/core/colors.dart';
+import 'package:netflix/core/constants.dart';
 import 'package:netflix/presentation/downloads/widgets/download_image_widget.dart';
 import 'package:netflix/presentation/widgets.dart/app_bar_widget.dart';
 
@@ -21,7 +22,129 @@ class ScreenDownloads extends StatelessWidget {
       backgroundColor: backgroundColor,
       body: ListView(
         children: [
-          Row(
+          const _SmartDownloads(),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 40),
+            child: Column(
+              children: [
+                Row(
+                  children: const [
+                    kWidth,
+                    Text(
+                      "Indroducing Downloads for you",
+                      style: TextStyle(
+                        color: kWhiteColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      // textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    "We will download a personalised selection of movies and shows for you, so there is always something to watch on your device",
+                    // textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey[400]),
+                  ),
+                ),
+                Container(
+                  width: size.width,
+                  height: size.width,
+                  color: Colors.black,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Center(
+                        child: CircleAvatar(
+                          radius: size.width * 0.37,
+                          backgroundColor: Colors.grey[800],
+                        ),
+                      ),
+                      DownloadImageRotate(
+                        index: 0,
+                        angle: -20,
+                        edge: EdgeInsets.only(right: 170, top: 60),
+                        downloadHeight: 0.52,
+                        downloadWidth: 0.33,
+                      ),
+                      DownloadImageRotate(
+                        index: 1,
+                        angle: 20,
+                        edge: EdgeInsets.only(left: 170, top: 60),
+                        downloadHeight: 0.52,
+                        downloadWidth: 0.33,
+                      ),
+                      DownloadImageRotate(
+                        index: 2,
+                        angle: 0,
+                        edge: EdgeInsets.only(left: 0),
+                        downloadHeight: 0.63,
+                        downloadWidth: 0.43,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: Container(
+                    width: double.infinity,
+                    child: MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                      onPressed: () {},
+                      color: kButtonColorBlue,
+                      child: const Text(
+                        "Set up",
+                        style: TextStyle(
+                          color: kWhiteColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 75),
+            child: MaterialButton(
+              onPressed: () {},
+              color: kButtonColorWhite,
+              child: const Text(
+                "Find More to Download",
+                style: TextStyle(
+                  color: kWhiteColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _SmartDownloads extends StatelessWidget {
+  const _SmartDownloads({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        children: [
+          kWidth,
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 5,
             children: const [
               Icon(
                 Icons.settings,
@@ -30,69 +153,6 @@ class ScreenDownloads extends StatelessWidget {
               Text("Smart Downloads"),
             ],
           ),
-          const Text("Indroducing Downloads for you"),
-          const Text(
-              "We will download a personalised selection of movies and shows for you, so there is always something to watch on your device"),
-          Container(
-            width: size.width,
-            height: size.width,
-            color: Colors.white,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Center(
-                  child: CircleAvatar(
-                    radius: size.width * 0.37,
-                  ),
-                ),
-                DownloadImageRotate(
-                  index: 0,
-                  angle: -20,
-                  edge: EdgeInsets.only(right: 170, top: 60),
-                  downloadHeight: 0.52,
-                  downloadWidth: 0.33,
-                ),
-                DownloadImageRotate(
-                  index: 1,
-                  angle: 20,
-                  edge: EdgeInsets.only(left: 170, top: 60),
-                  downloadHeight: 0.52,
-                  downloadWidth: 0.33,
-                ),
-                DownloadImageRotate(
-                  index: 2,
-                  angle: 0,
-                  edge: EdgeInsets.only(left: 0),
-                  downloadHeight: 0.65,
-                  downloadWidth: 0.45,
-                ),
-              ],
-            ),
-          ),
-          MaterialButton(
-            onPressed: () {},
-            color: kButtonColorBlue,
-            child: const Text(
-              "Set up",
-              style: TextStyle(
-                color: kWhiteColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          MaterialButton(
-            onPressed: () {},
-            color: kButtonColorWhite,
-            child: const Text(
-              "See what you can download",
-              style: TextStyle(
-                color: kBlackColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          )
         ],
       ),
     );
