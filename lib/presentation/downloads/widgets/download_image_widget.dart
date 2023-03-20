@@ -18,9 +18,9 @@ class DownloadImageRotate extends StatelessWidget {
   double? downloadWidth;
   final EdgeInsets? edge;
   final _pics = [
-    "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg",
-    "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg",
-    "https://www.themoviedb.org/t/p/w300_and_h450_bestv2/eU1i6eHXlzMOlEq0ku1Rzq7Y4wA.jpg",
+    "https://image.tmdb.org/t/p/original/5ScPNT6fHtfYJeWBajZciPV3hEL.jpg",
+    "https://lumiere-a.akamaihd.net/v1/images/mandalorian-poster-2_45ab56c3.jpeg?region=0,0,864,1280",
+    "https://cdn.europosters.eu/image/750/posters/the-last-of-us-key-art-i127761.jpg",
   ];
 
   @override
