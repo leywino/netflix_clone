@@ -48,7 +48,7 @@ class MainCard extends StatelessWidget {
         image: const DecorationImage(
           fit: BoxFit.cover,
           image: NetworkImage(
-              "https://image.tmdb.org/t/p/original/5ScPNT6fHtfYJeWBajZciPV3hEL.jpg"),
+              "https://lumiere-a.akamaihd.net/v1/images/mandalorian-poster-2_45ab56c3.jpeg?region=0,0,864,1280"),
         ),
       ),
     );
