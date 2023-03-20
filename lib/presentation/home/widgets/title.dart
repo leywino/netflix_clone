@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SearchTitleWidget extends StatelessWidget {
-  SearchTitleWidget({super.key, this.title});
+class MainTitle extends StatelessWidget {
+  MainTitle({super.key, this.title});
   String? title;
   @override
   Widget build(BuildContext context) {
