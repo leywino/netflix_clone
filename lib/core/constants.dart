@@ -10,5 +10,4 @@ const kHeight = SizedBox(
 //Border Radius
 
 final BorderRadius kRadius10 = BorderRadius.circular(10);
-const kMainImage =
-    "https://i.pinimg.com/564x/9c/e5/39/9ce53971b62fd0df3b17d2d4d7d95a3a.jpg";
+const kMainImage = "https://cdn.wallpapersafari.com/26/96/42UfXZ.jpg";
