@@ -1,33 +1,190 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:netflix/core/colors.dart';
+import 'package:netflix/core/constants.dart';
 import 'package:netflix/presentation/home/widgets/main_card2.dart';
 import 'package:netflix/presentation/home/widgets/main_title_card.dart';
+import 'package:netflix/presentation/widgets.dart/app_bar_widget.dart';
 
 class ScreenHome extends StatelessWidget {
-  const ScreenHome({super.key});
+  ScreenHome({super.key});
+
+  ValueNotifier<bool> ScrollNotifier = ValueNotifier(true);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      body: Padding(
-        padding: EdgeInsets.all(10),
-        child: ListView(
-          children: const [
-            MainTitleCard(
-              title: "Released in the Past Year",
+    return ValueListenableBuilder(
+        valueListenable: ScrollNotifier,
+        builder: ((context, scrollBool, _) {
+          return Scaffold(
+            backgroundColor: backgroundColor,
+            body: Padding(
+              padding: const EdgeInsets.all(10),
+              child: NotificationListener<UserScrollNotification>(
+                onNotification: (notification) {
+                  final ScrollDirection direction = notification.direction;
+                  print(direction);
+                  if (direction == ScrollDirection.reverse) {
+                    ScrollNotifier.value = false;
+                  } else if (direction == ScrollDirection.forward) {
+                    ScrollNotifier.value = true;
+                  }
+                  return true;
+                },
+                child: Stack(
+                  children: [
+                    ListView(
+                      children: [
+                        Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 500,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(kMainImage),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _HomeButtons("My List", Icons.add),
+                                  _PlayButton(),
+                                  _HomeButtons("Info", Icons.info),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        const MainTitleCard(
+                          title: "Released in the Past Year",
+                        ),
+                        const MainTitleCard(
+                          title: "Trending Now",
+                        ),
+                        const MainTitleCard2(
+                            title: "Top 10 TV shows in India today"),
+                        const MainTitleCard(
+                          title: "Tense Dramas",
+                        ),
+                        const MainTitleCard(
+                          title: "South Indian Cinemas",
+                        ),
+                      ],
+                    ),
+                    Visibility(
+                      visible: scrollBool,
+                      child: AnimatedContainer(
+                        duration: const Duration(
+                          milliseconds: 2000,
+                        ),
+                        color: Colors.black.withOpacity(0.5),
+                        width: double.infinity,
+                        height: 90,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Image.network(
+                                    "https://www.freepnglogos.com/uploads/netflix-logo-circle-png-5.png",
+                                    width: 60,
+                                  ),
+                                  const Spacer(),
+                                  const Icon(
+                                    size: 30,
+                                    Icons.cast,
+                                    color: kWhiteColor,
+                                  ),
+                                  kWidth,
+                                  Container(
+                                    color: Colors.cyan,
+                                    width: 25,
+                                    height: 25,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: const [
+                                Text(
+                                  "TV Shows",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "Movies",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  "Categories",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            MainTitleCard(
-              title: "Trending Now",
-            ),
-            MainTitleCard2(title: "Top 10 TV shows in India today"),
-            MainTitleCard(
-              title: "Tense Dramas",
-            ),
-            MainTitleCard(
-              title: "South Indian Cinemas",
-            ),
-          ],
+          );
+        }));
+  }
+
+  Wrap _HomeButtons(String title, IconData icon) {
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      direction: Axis.vertical,
+      children: [
+        Icon(
+          icon,
+          color: Colors.white,
+          weight: 30,
+          size: 25,
+        ),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+
+  TextButton _PlayButton() {
+    return TextButton.icon(
+      style: const ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll(Colors.white),
+      ),
+      onPressed: () {},
+      icon: const Icon(
+        Icons.play_arrow,
+        color: Colors.black,
+      ),
+      label: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5),
+        child: Text(
+          "Play",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
     );
