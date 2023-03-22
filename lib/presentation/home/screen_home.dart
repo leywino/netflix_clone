@@ -4,7 +4,7 @@ import 'package:netflix/core/colors.dart';
 import 'package:netflix/core/constants.dart';
 import 'package:netflix/presentation/home/widgets/main_card2.dart';
 import 'package:netflix/presentation/home/widgets/main_title_card.dart';
-import 'package:netflix/presentation/widgets.dart/app_bar_widget.dart';
+import 'package:netflix/presentation/widgets/app_bar_widget.dart';
 
 class ScreenHome extends StatelessWidget {
   ScreenHome({super.key});
@@ -18,130 +18,125 @@ class ScreenHome extends StatelessWidget {
         builder: ((context, scrollBool, _) {
           return Scaffold(
             backgroundColor: backgroundColor,
-            body: Padding(
-              padding: const EdgeInsets.all(10),
-              child: NotificationListener<UserScrollNotification>(
-                onNotification: (notification) {
-                  final ScrollDirection direction = notification.direction;
-                  print(direction);
-                  if (direction == ScrollDirection.reverse) {
-                    ScrollNotifier.value = false;
-                  } else if (direction == ScrollDirection.forward) {
-                    ScrollNotifier.value = true;
-                  }
-                  return true;
-                },
-                child: Stack(
-                  children: [
-                    ListView(
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              height: 500,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(kMainImage),
-                                ),
+            body: NotificationListener<UserScrollNotification>(
+              onNotification: (notification) {
+                final ScrollDirection direction = notification.direction;
+                if (direction == ScrollDirection.reverse) {
+                  ScrollNotifier.value = false;
+                } else if (direction == ScrollDirection.forward) {
+                  ScrollNotifier.value = true;
+                }
+                return true;
+              },
+              child: Stack(
+                children: [
+                  ListView(
+                    children: [
+                      Stack(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: 500,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(kMainImage),
                               ),
                             ),
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _HomeButtons("My List", Icons.add),
-                                  _PlayButton(),
-                                  _HomeButtons("Info", Icons.info),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        const MainTitleCard(
-                          title: "Released in the Past Year",
-                        ),
-                        const MainTitleCard(
-                          title: "Trending Now",
-                        ),
-                        const MainTitleCard2(
-                            title: "Top 10 TV shows in India today"),
-                        const MainTitleCard(
-                          title: "Tense Dramas",
-                        ),
-                        const MainTitleCard(
-                          title: "South Indian Cinemas",
-                        ),
-                      ],
-                    ),
-                    Visibility(
-                      visible: scrollBool,
-                      child: AnimatedContainer(
-                        duration: const Duration(
-                          milliseconds: 2000,
-                        ),
-                        color: Colors.black.withOpacity(0.5),
-                        width: double.infinity,
-                        height: 90,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Image.network(
-                                    "https://www.freepnglogos.com/uploads/netflix-logo-circle-png-5.png",
-                                    width: 60,
-                                  ),
-                                  const Spacer(),
-                                  const Icon(
-                                    size: 30,
-                                    Icons.cast,
-                                    color: kWhiteColor,
-                                  ),
-                                  kWidth,
-                                  Container(
-                                    color: Colors.cyan,
-                                    width: 25,
-                                    height: 25,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Row(
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: const [
-                                Text(
-                                  "TV Shows",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              children: [
+                                _HomeButtons("My List", Icons.add),
+                                _PlayButton(),
+                                _HomeButtons("Info", Icons.info),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      const MainTitleCard(
+                        title: "Released in the Past Year",
+                      ),
+                      const MainTitleCard(
+                        title: "Trending Now",
+                      ),
+                      const MainTitleCard2(
+                          title: "Top 10 TV shows in India today"),
+                      const MainTitleCard(
+                        title: "Tense Dramas",
+                      ),
+                      const MainTitleCard(
+                        title: "South Indian Cinemas",
+                      ),
+                    ],
+                  ),
+                  Visibility(
+                    visible: scrollBool,
+                    child: AnimatedContainer(
+                      duration: const Duration(
+                        milliseconds: 2000,
+                      ),
+                      color: Colors.black.withOpacity(0.5),
+                      width: double.infinity,
+                      height: 90,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Image.network(
+                                  "https://www.freepnglogos.com/uploads/netflix-logo-circle-png-5.png",
+                                  width: 60,
                                 ),
-                                Text(
-                                  "Movies",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                const Spacer(),
+                                const Icon(
+                                  size: 30,
+                                  Icons.cast,
+                                  color: kWhiteColor,
                                 ),
-                                Text(
-                                  "Categories",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                kWidth,
+                                Container(
+                                  color: Colors.cyan,
+                                  width: 25,
+                                  height: 25,
                                 ),
                               ],
-                            )
-                          ],
-                        ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: const [
+                              Text(
+                                "TV Shows",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "Movies",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "Categories",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );
