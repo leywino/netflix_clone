@@ -214,5 +214,87 @@ Widget _buildComingSoon(BuildContext context) {
 }
 
 Widget _buildEveryonesWatching() {
-  return const Text("Hello");
+  return ListView.builder(
+    itemCount: 10,
+    shrinkWrap: true,
+    itemBuilder: (context, index) {
+      return Column(
+        children: [
+          Stack(
+            children: [
+              Image.network(
+                "https://wallpapers.com/images/featured/dkttxahzpl44tbsa.jpg",
+                fit: BoxFit.cover,
+              ),
+              Positioned(
+                right: 5,
+                bottom: 5,
+                child: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.volume_off,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Stranger Things",
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.share,
+                        color: kWhiteColor,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.add,
+                        color: kWhiteColor,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(
+                        Icons.play_arrow,
+                        color: kWhiteColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces in order to get him back.",
+              textAlign: TextAlign.start,
+              // overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          kHeight,
+        ],
+      );
+    },
+  );
 }
