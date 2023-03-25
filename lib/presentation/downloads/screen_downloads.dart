@@ -1,6 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/application/downloads/downloads_bloc.dart';
 import 'package:netflix/core/colors.dart';
 import 'package:netflix/core/constants.dart';
 import 'package:netflix/presentation/downloads/widgets/download_image_widget.dart';
@@ -11,7 +11,12 @@ class ScreenDownloads extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<DownloadsBloc>(context)
+          .add(const DownloadsEvent.getDownloadsImage());
+    });
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: PreferredSize(
         child: AppBarWidget(
@@ -49,42 +54,55 @@ class ScreenDownloads extends StatelessWidget {
                     style: TextStyle(color: Colors.grey[400]),
                   ),
                 ),
-                Container(
-                  width: size.width,
-                  height: size.width,
-                  color: Colors.black,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Center(
-                        child: CircleAvatar(
-                          radius: size.width * 0.37,
-                          backgroundColor: Colors.grey[800],
-                        ),
+                BlocBuilder<DownloadsBloc, DownloadsState>(
+                  builder: (context, state) {
+                    return Container(
+                      width: size.width,
+                      height: size.width,
+                      color: Colors.black,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Center(
+                            child: CircleAvatar(
+                              radius: size.width * 0.37,
+                              backgroundColor: Colors.grey[800],
+                            ),
+                          ),
+                          DownloadImageRotate(
+                            index: 0,
+                            angle: -20,
+                            edge: EdgeInsets.only(right: 170, top: 60),
+                            downloadHeight: 0.52,
+                            downloadWidth: 0.33,
+                            imageUrl: state.downloads.isNotEmpty
+                                ? '$imageAppendUrl${state.downloads[0].posterPath}'
+                                : "https://wallpapercave.com/dwp1x/wp11809973.png",
+                          ),
+                          DownloadImageRotate(
+                            index: 1,
+                            angle: 20,
+                            edge: EdgeInsets.only(left: 170, top: 60),
+                            downloadHeight: 0.52,
+                            downloadWidth: 0.33,
+                            imageUrl: state.downloads.isNotEmpty
+                                ? '$imageAppendUrl${state.downloads[1].posterPath}'
+                                : "https://wallpapercave.com/dwp1x/wp11809973.png",
+                          ),
+                          DownloadImageRotate(
+                            index: 2,
+                            angle: 0,
+                            edge: EdgeInsets.only(left: 0),
+                            downloadHeight: 0.63,
+                            downloadWidth: 0.43,
+                            imageUrl: state.downloads.isNotEmpty
+                                ? '$imageAppendUrl${state.downloads[2].posterPath}'
+                                : "https://wallpapercave.com/dwp1x/wp11809973.png",
+                          ),
+                        ],
                       ),
-                      DownloadImageRotate(
-                        index: 0,
-                        angle: -20,
-                        edge: EdgeInsets.only(right: 170, top: 60),
-                        downloadHeight: 0.52,
-                        downloadWidth: 0.33,
-                      ),
-                      DownloadImageRotate(
-                        index: 1,
-                        angle: 20,
-                        edge: EdgeInsets.only(left: 170, top: 60),
-                        downloadHeight: 0.52,
-                        downloadWidth: 0.33,
-                      ),
-                      DownloadImageRotate(
-                        index: 2,
-                        angle: 0,
-                        edge: EdgeInsets.only(left: 0),
-                        downloadHeight: 0.63,
-                        downloadWidth: 0.43,
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
