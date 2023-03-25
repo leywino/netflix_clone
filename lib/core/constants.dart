@@ -11,3 +11,4 @@ const kHeight = SizedBox(
 
 final BorderRadius kRadius10 = BorderRadius.circular(10);
 const kMainImage = "https://cdn.wallpapersafari.com/26/96/42UfXZ.jpg";
+const imageAppendUrl = "https://image.tmdb.org/t/p/w500/";
