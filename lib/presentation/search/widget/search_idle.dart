@@ -86,7 +86,7 @@ class TopSearchItemTile extends StatelessWidget {
                   child: Text(
                     title,
                     textAlign: TextAlign.start,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 15,
                     ),
@@ -97,7 +97,7 @@ class TopSearchItemTile extends StatelessWidget {
             ),
           ],
         ),
-        Icon(
+        const Icon(
           Icons.play_circle_outline,
           color: Colors.white,
           size: 35,

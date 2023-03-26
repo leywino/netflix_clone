@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:netflix/application/hot_and_new/hot_and_new_bloc.dart';
 import 'package:netflix/core/colors.dart';
-import 'package:netflix/presentation/widgets/app_bar_widget.dart';
 
 import '../../core/constants.dart';
 
@@ -109,9 +106,9 @@ class ComingSoonWidget extends StatelessWidget {
               itemBuilder: (BuildContext context, index) {
                 // print(state.comingSoonList[0].releaseDate);
 
-                final _date =
+                final date =
                     DateTime.parse(state.comingSoonList[index].releaseDate!);
-                final formatedDate = DateFormat.yMMMMd('en_US').format(_date);
+                final formatedDate = DateFormat.yMMMMd('en_US').format(date);
                 final month =
                     formatedDate.split(' ').first.substring(0, 3).toUpperCase();
                 return Column(
@@ -126,14 +123,14 @@ class ComingSoonWidget extends StatelessWidget {
                             children: [
                               Text(
                                 month,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                 ),
                               ),
                               Text(
                                 state.comingSoonList[index].releaseDate!
                                     .split('-')[2],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -149,7 +146,7 @@ class ComingSoonWidget extends StatelessWidget {
                               Stack(
                                 children: [
                                   SizedBox(
-                                    height: 200,
+                                    height: 250,
                                     child: Image.network(
                                       '$imageAppendUrl${state.comingSoonList[index].backdropPath!}',
                                       fit: BoxFit.cover,
@@ -226,8 +223,8 @@ class ComingSoonWidget extends StatelessWidget {
                                     state.comingSoonList[index].overview!,
                                     textAlign: TextAlign.start,
                                     // overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 14,
+                                    style: const TextStyle(
+                                      fontSize: 12,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.grey,
                                     ),
@@ -318,7 +315,7 @@ class EveryonesWatchingWidget extends StatelessWidget {
                             state.everyOneIsWatchingList[index].title ??
                                 state.everyOneIsWatchingList[index].name ??
                                 'no title',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                             ),
@@ -353,12 +350,12 @@ class EveryonesWatchingWidget extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
                       state.everyOneIsWatchingList[index].overview!,
                       textAlign: TextAlign.start,
                       // overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         color: Colors.grey,

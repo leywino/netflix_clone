@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -34,8 +33,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           isLoading: true,
           isError: false,
         ));
-        final _result = await _downloadsService.getDownloadsImages();
-        _result.fold((MainFailure f) {
+        final result = await _downloadsService.getDownloadsImages();
+        result.fold((MainFailure f) {
           emit(const SearchState(
             searchResultList: [],
             idleList: [],
@@ -62,9 +61,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         isLoading: true,
         isError: false,
       ));
-      final _result =
+      final result =
           await _searchService.searchMovies(movieQuery: event.movieQuery);
-      final _state = _result.fold((MainFailure f) {
+      final state = result.fold((MainFailure f) {
         return const SearchState(
           searchResultList: [],
           idleList: [],
@@ -81,7 +80,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       });
 
       //show to ui
-      emit(_state);
+      emit(state);
     });
   }
 }

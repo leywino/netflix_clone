@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -22,8 +23,8 @@ class HotAndNewBloc extends Bloc<HotAndNewEvent, HotAndNewState> {
           hasError: false,
         ),
       );
-      final _result = await _hotAndNewService.getHotAndNewMovieData();
-      final newState = _result.fold(
+      final result = await _hotAndNewService.getHotAndNewMovieData();
+      final newState = result.fold(
         (MainFailure failure) {
           return const HotAndNewState(
             comingSoonList: [],
@@ -56,9 +57,9 @@ class HotAndNewBloc extends Bloc<HotAndNewEvent, HotAndNewState> {
       );
       //get data from remote
 
-      final _result = await _hotAndNewService.getHotAndNewTvData();
+      final result = await _hotAndNewService.getHotAndNewTvData();
       //data to state
-      final newState = _result.fold(
+      final newState = result.fold(
         (MainFailure failure) {
           return const HotAndNewState(
             comingSoonList: [],

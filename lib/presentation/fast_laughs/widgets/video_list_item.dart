@@ -39,6 +39,7 @@ class VideoListItem extends StatelessWidget {
       children: [
         FastLaughVideoPlayer(
           videoUrl: videoUrl,
+          // ignore: avoid_types_as_parameter_names
           onStateChange: (bool) {},
         ),
         Align(
@@ -50,7 +51,7 @@ class VideoListItem extends StatelessWidget {
               //left side
               IconButton(
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.volume_off,
                   color: Colors.white,
                 ),
@@ -74,6 +75,7 @@ class VideoListItem extends StatelessWidget {
                   ValueListenableBuilder(
                     valueListenable: likedVideoIdsNotifier,
                     builder: (context, Set<int> newLikedListIds, Widget? _) {
+                      // ignore: no_leading_underscores_for_local_identifiers
                       final _index = index;
                       if (newLikedListIds.contains(_index)) {
                         return GestureDetector(
@@ -81,9 +83,10 @@ class VideoListItem extends StatelessWidget {
                             // BlocProvider.of<FastLaughBloc>(context)
                             //     .add(UnlikedVideo(id: _index));
                             likedVideoIdsNotifier.value.remove(_index);
+                            // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                             likedVideoIdsNotifier.notifyListeners();
                           },
-                          child: VideoActionsWidget(
+                          child: const VideoActionsWidget(
                             icon: Icons.favorite,
                             title: "Liked",
                           ),
@@ -94,16 +97,17 @@ class VideoListItem extends StatelessWidget {
                           // BlocProvider.of<FastLaughBloc>(context)
                           //     .add(LikedVideo(id: _index));
                           likedVideoIdsNotifier.value.add(_index);
+                          // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
                           likedVideoIdsNotifier.notifyListeners();
                         },
-                        child: VideoActionsWidget(
+                        child: const VideoActionsWidget(
                           icon: Icons.emoji_emotions,
                           title: "LOL",
                         ),
                       );
                     },
                   ),
-                  VideoActionsWidget(icon: Icons.add, title: "My List"),
+                  const VideoActionsWidget(icon: Icons.add, title: "My List"),
                   GestureDetector(
                     onTap: () {
                       final movieName = VideoListItemInheritedWidget.of(context)
@@ -116,12 +120,12 @@ class VideoListItem extends StatelessWidget {
                         Share.share(movieName);
                       }
                     },
-                    child: VideoActionsWidget(
+                    child: const VideoActionsWidget(
                       icon: Icons.share,
                       title: "Share",
                     ),
                   ),
-                  VideoActionsWidget(icon: Icons.play_arrow, title: "Play"),
+                  const VideoActionsWidget(icon: Icons.play_arrow, title: "Play"),
                 ],
               )
             ],
@@ -133,7 +137,7 @@ class VideoListItem extends StatelessWidget {
 }
 
 class VideoActionsWidget extends StatelessWidget {
-  VideoActionsWidget({super.key, required this.icon, required this.title});
+  const VideoActionsWidget({super.key, required this.icon, required this.title});
 
   final IconData icon;
   final String title;
@@ -150,7 +154,7 @@ class VideoActionsWidget extends StatelessWidget {
           ),
           Text(
             title,
-            style: TextStyle(color: kWhiteColor, fontSize: 15),
+            style: const TextStyle(color: kWhiteColor, fontSize: 15),
           ),
         ],
       ),

@@ -11,10 +11,10 @@ class MainTitleCard extends StatelessWidget {
   });
   final String title;
   final List posterList;
-  
 
   @override
   Widget build(BuildContext context) {
+    posterList.shuffle;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Column(

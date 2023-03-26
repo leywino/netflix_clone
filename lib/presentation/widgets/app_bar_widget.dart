@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:netflix/core/colors.dart';
 import 'package:netflix/core/constants.dart';
 
+// ignore: must_be_immutable
 class AppBarWidget extends StatelessWidget {
   AppBarWidget({super.key, this.title});
   String? title;
@@ -16,10 +17,10 @@ class AppBarWidget extends StatelessWidget {
           style:
               GoogleFonts.montserrat(fontSize: 30, fontWeight: FontWeight.bold),
         ),
-        Spacer(
+        const Spacer(
           flex: 1,
         ),
-        Icon(
+        const Icon(
           size: 30,
           Icons.cast,
           color: kWhiteColor,

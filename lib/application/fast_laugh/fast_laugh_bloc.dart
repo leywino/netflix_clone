@@ -1,9 +1,9 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:netflix/domain/downloads/i_downloads_repo.dart';
 import 'package:netflix/domain/downloads/models/downloads.dart';
-
 part 'fast_laugh_event.dart';
 part 'fast_laugh_state.dart';
 part 'fast_laugh_bloc.freezed.dart';
@@ -11,6 +11,7 @@ part 'fast_laugh_bloc.freezed.dart';
 @injectable
 class FastLaughBloc extends Bloc<FastLaughEvent, FastLaughState> {
   FastLaughBloc(
+    // ignore: no_leading_underscores_for_local_identifiers
     IDownloadsRepo _downloadService,
   ) : super(FastLaughState.initial()) {
     on<Initialize>((event, emit) async {
@@ -21,8 +22,8 @@ class FastLaughBloc extends Bloc<FastLaughEvent, FastLaughState> {
         isError: false,
       ));
       // get trending movies
-      final _result = await _downloadService.getDownloadsImages();
-      final _state = _result.fold((l) {
+      final result = await _downloadService.getDownloadsImages();
+      final state = result.fold((l) {
         return FastLaughState(
           videosList: [],
           isLoading: false,
@@ -36,7 +37,7 @@ class FastLaughBloc extends Bloc<FastLaughEvent, FastLaughState> {
               ));
 
       // send to ui
-      emit(_state);
+      emit(state);
     });
   }
 }

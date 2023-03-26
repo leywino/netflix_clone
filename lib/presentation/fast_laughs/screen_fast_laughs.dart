@@ -10,7 +10,7 @@ class ScreenFastLaugh extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      BlocProvider.of<FastLaughBloc>(context).add(Initialize());
+      BlocProvider.of<FastLaughBloc>(context).add(const Initialize());
     });
     return Scaffold(
       backgroundColor: backgroundColor,

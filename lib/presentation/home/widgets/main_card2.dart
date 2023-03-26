@@ -29,7 +29,7 @@ class MainTitleCard2 extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               children: List.generate(
                 10,
-                (index) => Container(
+                (index) => SizedBox(
                   width: 180,
                   child: Stack(
                     children: [
@@ -50,7 +50,7 @@ class MainTitleCard2 extends StatelessWidget {
                             child: Text(
                               "${index + 1}",
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 90,
                                 color: Colors.black,
