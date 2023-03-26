@@ -8,8 +8,10 @@ class MainTitleCard2 extends StatelessWidget {
   const MainTitleCard2({
     super.key,
     required this.title,
+    required  this.posterList,
   });
   final String title;
+  final List<String> posterList;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,9 @@ class MainTitleCard2 extends StatelessWidget {
                     children: [
                       Positioned(
                         right: 10,
-                        child: MainCard(),
+                        child: MainCard(
+                          posterPath: posterList[index],
+                        ),
                       ),
                       Positioned(
                         bottom: -10,

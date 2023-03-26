@@ -7,8 +7,11 @@ class MainTitleCard extends StatelessWidget {
   const MainTitleCard({
     super.key,
     required this.title,
+    required this.posterList,
   });
   final String title;
+  final List posterList;
+  
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +28,8 @@ class MainTitleCard extends StatelessWidget {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: List.generate(
-                10,
-                (index) => MainCard(),
+                posterList.length,
+                (index) => MainCard(posterPath: posterList[index]),
               ),
             ),
           ),

@@ -4,8 +4,9 @@ import 'package:netflix/core/constants.dart';
 class MainCard extends StatelessWidget {
   const MainCard({
     super.key,
+    required this.posterPath,
   });
-
+  final String posterPath;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,10 +16,10 @@ class MainCard extends StatelessWidget {
         height: 180,
         decoration: BoxDecoration(
           borderRadius: kRadius10,
-          image: const DecorationImage(
+          image: DecorationImage(
             fit: BoxFit.cover,
             image: NetworkImage(
-                "https://assets-prd.ignimgs.com/2023/01/24/shzam2-vert-main-2764x4096-dom-1674589983500.jpg"),
+               posterPath),
           ),
         ),
       ),
