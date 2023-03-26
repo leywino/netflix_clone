@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:math';
 
 import 'package:injectable/injectable.dart';
@@ -26,13 +28,12 @@ class DownloadsRepository implements IDownloadsRepo {
         return const Left(MainFailure.serverFailure());
       }
     } catch (e) {
-      print(e.toString());
       return const Left(MainFailure.clientFailure());
     }
   }
 
-  @override
   Future<Either<MainFailure, List<Downloads>>> getDownloadsImage() {
+    // ignore: todo
     // TODO: implement getDownloadsImage
     throw UnimplementedError();
   }

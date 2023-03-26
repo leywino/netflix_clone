@@ -7,7 +7,7 @@ import 'package:netflix/presentation/downloads/widgets/download_image_widget.dar
 import 'package:netflix/presentation/widgets/app_bar_widget.dart';
 
 class ScreenDownloads extends StatelessWidget {
-  ScreenDownloads({super.key});
+  const ScreenDownloads({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +19,10 @@ class ScreenDownloads extends StatelessWidget {
 
     return Scaffold(
       appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(50),
         child: AppBarWidget(
           title: "Downloads",
         ),
-        preferredSize: const Size.fromHeight(50),
       ),
       backgroundColor: backgroundColor,
       body: ListView(
@@ -72,17 +72,17 @@ class ScreenDownloads extends StatelessWidget {
                           DownloadImageRotate(
                             index: 0,
                             angle: -20,
-                            edge: EdgeInsets.only(right: 170, top: 60),
+                            edge: const EdgeInsets.only(right: 170, top: 60),
                             downloadHeight: 0.52,
                             downloadWidth: 0.33,
                             imageUrl: state.downloads.isNotEmpty
-                                ? '$imageAppendUrl${state.downloads[0].posterPath}'
+                                ? '$imageAppendUrl${state.downloads[2].posterPath}'
                                 : "https://wallpapercave.com/dwp1x/wp11809973.png",
                           ),
                           DownloadImageRotate(
                             index: 1,
                             angle: 20,
-                            edge: EdgeInsets.only(left: 170, top: 60),
+                            edge: const EdgeInsets.only(left: 170, top: 60),
                             downloadHeight: 0.52,
                             downloadWidth: 0.33,
                             imageUrl: state.downloads.isNotEmpty
@@ -92,11 +92,11 @@ class ScreenDownloads extends StatelessWidget {
                           DownloadImageRotate(
                             index: 2,
                             angle: 0,
-                            edge: EdgeInsets.only(left: 0),
+                            edge: const EdgeInsets.only(left: 0),
                             downloadHeight: 0.63,
                             downloadWidth: 0.43,
                             imageUrl: state.downloads.isNotEmpty
-                                ? '$imageAppendUrl${state.downloads[2].posterPath}'
+                                ? '$imageAppendUrl${state.downloads[0].posterPath}'
                                 : "https://wallpapercave.com/dwp1x/wp11809973.png",
                           ),
                         ],
@@ -106,7 +106,7 @@ class ScreenDownloads extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Container(
+                  child: SizedBox(
                     width: double.infinity,
                     child: MaterialButton(
                       shape: RoundedRectangleBorder(
@@ -149,9 +149,7 @@ class ScreenDownloads extends StatelessWidget {
 }
 
 class _SmartDownloads extends StatelessWidget {
-  const _SmartDownloads({
-    super.key,
-  });
+  const _SmartDownloads();
 
   @override
   Widget build(BuildContext context) {

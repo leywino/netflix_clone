@@ -1,3 +1,4 @@
+// ignore: depend_on_referenced_packages
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
@@ -22,10 +23,10 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       emit(state.copyWith(isLoading: true, hasError: false));
 
       //get data
-      final _movieResult = await _homeService.getHotAndNewMovieData();
-      final _tvResult = await _homeService.getHotAndNewTvData();
+      final movieResult = await _homeService.getHotAndNewMovieData();
+      final tvResult = await _homeService.getHotAndNewTvData();
       //transform data
-      final _state1 = _movieResult.fold(
+      final state1 = movieResult.fold(
         (MainFailure failure) {
           return HomePageState(
             stateId: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -59,8 +60,8 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
           );
         },
       );
-      emit(_state1);
-      final _state2 = _tvResult.fold(
+      emit(state1);
+      final state2 = tvResult.fold(
         (MainFailure failure) {
           return HomePageState(
             stateId: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -89,8 +90,9 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       );
 
       //send to  ui
-      emit(_state2);
+      emit(state2);
 
+      // ignore: todo
       // TODO: implement event handler
     });
   }

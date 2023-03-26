@@ -31,7 +31,7 @@ class SearchResultWidget extends StatelessWidget {
                   childAspectRatio: 3 / 4,
                   children: List.generate(15, (index) {
                     if (state.searchResultList.isEmpty) {
-                      return Center(
+                      return const Center(
                         child: Text("No results found"),
                       );
                     } else {

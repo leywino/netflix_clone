@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SearchTitleWidget extends StatelessWidget {
   SearchTitleWidget({super.key, this.title});
   String? title;

@@ -1,10 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:netflix/application/downloads/downloads_bloc.dart';
 import 'package:netflix/core/colors.dart';
-import 'package:netflix/core/constants.dart';
 
+// ignore: must_be_immutable
 class DownloadImageRotate extends StatelessWidget {
   DownloadImageRotate({
     super.key,

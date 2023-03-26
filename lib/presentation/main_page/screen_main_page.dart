@@ -15,7 +15,7 @@ class ScreenMainPage extends StatelessWidget {
     const ScreenNewAndHot(),
     const ScreenFastLaugh(),
     ScreenSearch(),
-    ScreenDownloads()
+    const ScreenDownloads()
   ];
 
   @override
@@ -30,7 +30,7 @@ class ScreenMainPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: BottomNavigationWidget(),
+      bottomNavigationBar: const BottomNavigationWidget(),
     );
   }
 }

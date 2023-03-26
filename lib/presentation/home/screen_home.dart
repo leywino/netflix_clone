@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:netflix/application/home_page/home_page_bloc.dart';
 import 'package:netflix/core/colors.dart';
 import 'package:netflix/core/constants.dart';
-import 'package:netflix/presentation/home/widgets/main_card2.dart';
 import 'package:netflix/presentation/home/widgets/main_title_card.dart';
-import 'package:netflix/presentation/widgets/app_bar_widget.dart';
 
+// ignore: must_be_immutable
 class ScreenHome extends StatelessWidget {
   ScreenHome({super.key});
 
+  // ignore: non_constant_identifier_names
   ValueNotifier<bool> ScrollNotifier = ValueNotifier(true);
 
   @override
@@ -52,42 +52,44 @@ class ScreenHome extends StatelessWidget {
                         );
                       }
 
-                      final _releasedPastYear = state.pastYearMovieList.map(
+                      final releasedPastYear = state.pastYearMovieList.map(
                         (m) {
                           return '$imageAppendUrl${m.posterPath}';
                         },
                       ).toList();
+                      releasedPastYear.shuffle();
                       //trending--------
 
-                      final _trending = state.trendingMovieList.map(
+                      final trending = state.trendingMovieList.map(
                         (m) {
                           return '$imageAppendUrl${m.posterPath}';
                         },
                       ).toList();
+                      trending.shuffle();
                       //tense drama---------
-                      final _tenseDrama = state.tenseMovieList.map(
+                      final tenseDrama = state.tenseMovieList.map(
                         (m) {
                           return '$imageAppendUrl${m.posterPath}';
                         },
                       ).toList();
                       //south indian Cinemas---------
 
-                      final _southIndianCinemas =
+                      final southIndianCinemas =
                           state.southIndianMovieList.map(
                         (m) {
                           return '$imageAppendUrl${m.posterPath}';
                         },
                       ).toList();
-                      _southIndianCinemas.shuffle();
+                      southIndianCinemas.shuffle();
 
                       // top 10 tv show--------
 
-                      final _top10TvShow = state.trendingTvList.map(
+                      final top10TvShow = state.trendingTvList.map(
                         (m) {
                           return '$imageAppendUrl${m.posterPath}';
                         },
                       ).toList();
-                      _top10TvShow.shuffle();
+                      top10TvShow.shuffle();
                       return ListView(
                         children: [
                           Stack(
@@ -120,11 +122,11 @@ class ScreenHome extends StatelessWidget {
                           ),
                           MainTitleCard(
                             title: "Released in the Past Year",
-                            posterList: _releasedPastYear,
+                            posterList: releasedPastYear,
                           ),
                           MainTitleCard(
                             title: "Trending Now",
-                            posterList: _trending,
+                            posterList: trending,
                           ),
                           // MainTitleCard2(
                           //   title: "Top 10 TV shows in India today",
@@ -132,11 +134,11 @@ class ScreenHome extends StatelessWidget {
                           // ),
                           MainTitleCard(
                             title: "Tense Dramas",
-                            posterList: _tenseDrama,
+                            posterList: tenseDrama,
                           ),
                           MainTitleCard(
                             title: "South Indian Cinemas",
-                            posterList: _southIndianCinemas,
+                            posterList: southIndianCinemas,
                           ),
                         ],
                       );
@@ -210,6 +212,7 @@ class ScreenHome extends StatelessWidget {
         }));
   }
 
+  // ignore: non_constant_identifier_names
   Wrap _HomeButtons(String title, IconData icon) {
     return Wrap(
       crossAxisAlignment: WrapCrossAlignment.center,
@@ -232,6 +235,7 @@ class ScreenHome extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   TextButton _PlayButton() {
     return TextButton.icon(
       style: const ButtonStyle(
