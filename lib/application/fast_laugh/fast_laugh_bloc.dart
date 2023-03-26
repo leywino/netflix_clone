@@ -38,7 +38,5 @@ class FastLaughBloc extends Bloc<FastLaughEvent, FastLaughState> {
       // send to ui
       emit(_state);
     });
-   
-}
-
+  }
 }

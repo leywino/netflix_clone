@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:netflix/application/hot_and_new/hot_and_new_bloc.dart';
 import 'package:netflix/core/colors.dart';
 import 'package:netflix/presentation/widgets/app_bar_widget.dart';
 
@@ -67,10 +71,10 @@ class ScreenNewAndHot extends StatelessWidget {
           ),
         ),
         backgroundColor: backgroundColor,
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            _buildComingSoon(context),
-            _buildEveryonesWatching(),
+            ComingSoonWidget(),
+            EveryonesWatchingWidget(),
           ],
         ),
       ),
@@ -78,223 +82,269 @@ class ScreenNewAndHot extends StatelessWidget {
   }
 }
 
-Widget _buildComingSoon(BuildContext context) {
-  Size size = MediaQuery.of(context).size;
-  return ListView.builder(
-      itemCount: 10,
-      itemBuilder: (BuildContext context, index) {
-        return Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 50,
-                  height: 420,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "FEB",
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        "11",
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: size.width - 50,
-                  height: 420,
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Image.network(
-                            "https://images8.alphacoders.com/116/1164638.jpg",
-                            fit: BoxFit.cover,
-                          ),
-                          Positioned(
-                            right: 5,
-                            bottom: 5,
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                Icons.volume_off,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            "LUCIFER",
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.notifications_outlined,
-                                  size: 30,
-                                  color: kWhiteColor,
-                                ),
-                              ),
-                              IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                  Icons.info_outline,
-                                  size: 30,
-                                  color: kWhiteColor,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const Spacer(),
-                      Column(
-                        children: [
-                          Row(
+class ComingSoonWidget extends StatelessWidget {
+  const ComingSoonWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<HotAndNewBloc>(context).add(const LoadDataInComingSoon());
+    });
+    Size size = MediaQuery.of(context).size;
+    return BlocBuilder<HotAndNewBloc, HotAndNewState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const CircularProgressIndicator();
+        } else if (state.hasError) {
+          return const Center(
+            child: Text("Error while loading coming soon list"),
+          );
+        } else if (state.comingSoonList.isEmpty) {
+          return const Center(
+            child: Text("Coming soon list is empty"),
+          );
+        } else {
+          return ListView.builder(
+              itemCount: 10,
+              itemBuilder: (BuildContext context, index) {
+                // print(state.comingSoonList[0].releaseDate);
+
+                final _date =
+                    DateTime.parse(state.comingSoonList[index].releaseDate!);
+                final formatedDate = DateFormat.yMMMMd('en_US').format(_date);
+                final month =
+                    formatedDate.split(' ').first.substring(0, 3).toUpperCase();
+                return Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 50,
+                          height: 420,
+                          child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
-                                "Coming on February 11",
-                                textAlign: TextAlign.start,
+                                month,
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                state.comingSoonList[index].releaseDate!
+                                    .split('-')[2],
+                                style: TextStyle(
+                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
-                          const Text(
-                            "Lucifer Morningstar has decided he's had enough of being the dutiful servant in Hell and decides to spend some time on Earth to better understand humanity. He settles in Los Angeles - the City of Angels.",
-                            textAlign: TextAlign.start,
-                            // overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
-                            ),
+                        ),
+                        SizedBox(
+                          width: size.width - 50,
+                          height: 420,
+                          child: Column(
+                            children: [
+                              Stack(
+                                children: [
+                                  SizedBox(
+                                    height: 200,
+                                    child: Image.network(
+                                      '$imageAppendUrl${state.comingSoonList[index].backdropPath!}',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    right: 5,
+                                    bottom: 5,
+                                    child: IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(
+                                        Icons.volume_off,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: 300,
+                                    child: Text(
+                                      state
+                                          .comingSoonList[index].originalTitle!,
+                                      style: const TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.notifications_outlined,
+                                          size: 30,
+                                          color: kWhiteColor,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.info_outline,
+                                          size: 30,
+                                          color: kWhiteColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const Spacer(),
+                              Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: const [
+                                      Text(
+                                        "Coming on February 11",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    state.comingSoonList[index].overview!,
+                                    textAlign: TextAlign.start,
+                                    // overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  kHeight,
+                                  // const Text(
+                                  //   "Drama · Mythical · Crime · Comedy",
+                                  //   textAlign: TextAlign.start,
+                                  //   style: TextStyle(
+                                  //     fontSize: 16,
+                                  //     fontWeight: FontWeight.bold,
+                                  //   ),
+                                  // ),
+                                  // kHeight,
+                                ],
+                              )
+                            ],
                           ),
-                          kHeight,
-                          const Text(
-                            "Drama · Mythical · Crime · Comedy",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          kHeight,
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ],
-        );
-      });
+                        ),
+                      ],
+                    )
+                  ],
+                );
+              });
+        }
+      },
+    );
+  }
 }
 
-Widget _buildEveryonesWatching() {
-  return ListView.builder(
-    itemCount: 10,
-    shrinkWrap: true,
-    itemBuilder: (context, index) {
-      return Column(
-        children: [
-          Stack(
-            children: [
-              Image.network(
-                "https://wallpapers.com/images/featured/dkttxahzpl44tbsa.jpg",
-                fit: BoxFit.cover,
-              ),
-              Positioned(
-                right: 5,
-                bottom: 5,
-                child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.volume_off,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+class EveryonesWatchingWidget extends StatelessWidget {
+  const EveryonesWatchingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: 10,
+      shrinkWrap: true,
+      itemBuilder: (context, index) {
+        return Column(
+          children: [
+            Stack(
               children: [
-                const Text(
-                  "Stranger Things",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Image.network(
+                  "https://wallpapers.com/images/featured/dkttxahzpl44tbsa.jpg",
+                  fit: BoxFit.cover,
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.share,
-                        color: kWhiteColor,
-                      ),
+                Positioned(
+                  right: 5,
+                  bottom: 5,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.volume_off,
+                      color: Colors.white,
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.add,
-                        color: kWhiteColor,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.play_arrow,
-                        color: kWhiteColor,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces in order to get him back.",
-              textAlign: TextAlign.start,
-              // overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Stranger Things",
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.share,
+                          color: kWhiteColor,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.add,
+                          color: kWhiteColor,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.play_arrow,
+                          color: kWhiteColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-          ),
-          kHeight,
-        ],
-      );
-    },
-  );
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces in order to get him back.",
+                textAlign: TextAlign.start,
+                // overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            kHeight,
+          ],
+        );
+      },
+    );
+  }
 }
