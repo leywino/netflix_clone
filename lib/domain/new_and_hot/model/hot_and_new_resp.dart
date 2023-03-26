@@ -1,4 +1,3 @@
-
 import 'package:json_annotation/json_annotation.dart';
 
 part 'hot_and_new_resp.g.dart';
@@ -31,6 +30,8 @@ class HotAndNewData {
   num? id;
   @JsonKey(name: 'original_language')
   String? originalLanguage;
+  @JsonKey(name: 'name')
+  String? name;
   @JsonKey(name: 'original_title')
   String? originalTitle;
   String? overview;
@@ -50,6 +51,7 @@ class HotAndNewData {
     this.posterPath,
     this.releaseDate,
     this.title,
+    this.name,
   });
 
   factory HotAndNewData.fromJson(Map<String, dynamic> json) {
