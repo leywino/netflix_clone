@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/application/home_page/home_page_bloc.dart';
 import 'package:netflix/core/colors.dart';
 import 'package:netflix/core/constants.dart';
 import 'package:netflix/presentation/home/widgets/main_card2.dart';
@@ -13,6 +15,9 @@ class ScreenHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<HomePageBloc>(context).add(const GetHomeScreenData());
+    });
     return ValueListenableBuilder(
         valueListenable: ScrollNotifier,
         builder: ((context, scrollBool, _) {
@@ -30,50 +35,112 @@ class ScreenHome extends StatelessWidget {
               },
               child: Stack(
                 children: [
-                  ListView(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: 500,
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(kMainImage),
-                              ),
-                            ),
+                  BlocBuilder<HomePageBloc, HomePageState>(
+                    builder: (context, state) {
+                      if (state.isLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
                           ),
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                _HomeButtons("My List", Icons.add),
-                                _PlayButton(),
-                                _HomeButtons("Info", Icons.info),
-                              ],
-                            ),
-                          )
+                        );
+                      } else if (state.hasError) {
+                        return const Center(
+                          child: Text(
+                            "Error while getting data",
+                            style: TextStyle(color: kWhiteColor),
+                          ),
+                        );
+                      }
+
+                      final _releasedPastYear = state.pastYearMovieList.map(
+                        (m) {
+                          return '$imageAppendUrl${m.posterPath}';
+                        },
+                      ).toList();
+                      //trending--------
+
+                      final _trending = state.trendingMovieList.map(
+                        (m) {
+                          return '$imageAppendUrl${m.posterPath}';
+                        },
+                      ).toList();
+                      //tense drama---------
+                      final _tenseDrama = state.tenseMovieList.map(
+                        (m) {
+                          return '$imageAppendUrl${m.posterPath}';
+                        },
+                      ).toList();
+                      //south indian Cinemas---------
+
+                      final _southIndianCinemas =
+                          state.southIndianMovieList.map(
+                        (m) {
+                          return '$imageAppendUrl${m.posterPath}';
+                        },
+                      ).toList();
+                      _southIndianCinemas.shuffle();
+
+                      // top 10 tv show--------
+
+                      final _top10TvShow = state.trendingTvList.map(
+                        (m) {
+                          return '$imageAppendUrl${m.posterPath}';
+                        },
+                      ).toList();
+                      _top10TvShow.shuffle();
+                      return ListView(
+                        children: [
+                          Stack(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: 500,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(kMainImage),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                left: 0,
+                                right: 0,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _HomeButtons("My List", Icons.add),
+                                    _PlayButton(),
+                                    _HomeButtons("Info", Icons.info),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          MainTitleCard(
+                            title: "Released in the Past Year",
+                            posterList: _releasedPastYear,
+                          ),
+                          MainTitleCard(
+                            title: "Trending Now",
+                            posterList: _trending,
+                          ),
+                          // MainTitleCard2(
+                          //   title: "Top 10 TV shows in India today",
+                          //   posterList: _top10TvShow,
+                          // ),
+                          MainTitleCard(
+                            title: "Tense Dramas",
+                            posterList: _tenseDrama,
+                          ),
+                          MainTitleCard(
+                            title: "South Indian Cinemas",
+                            posterList: _southIndianCinemas,
+                          ),
                         ],
-                      ),
-                      const MainTitleCard(
-                        title: "Released in the Past Year",
-                      ),
-                      const MainTitleCard(
-                        title: "Trending Now",
-                      ),
-                      const MainTitleCard2(
-                          title: "Top 10 TV shows in India today"),
-                      const MainTitleCard(
-                        title: "Tense Dramas",
-                      ),
-                      const MainTitleCard(
-                        title: "South Indian Cinemas",
-                      ),
-                    ],
+                      );
+                    },
                   ),
                   Visibility(
                     visible: scrollBool,
