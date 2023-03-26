@@ -3,8 +3,10 @@ import 'package:netflix/core/colors.dart';
 import 'package:netflix/core/constants.dart';
 import 'package:video_player/video_player.dart';
 import 'package:netflix/domain/downloads/models/downloads.dart';
+import 'package:share_plus/share_plus.dart';
 
 ValueNotifier<Set<int>> likedVideoIdsNotifier = ValueNotifier({});
+
 class VideoListItemInheritedWidget extends InheritedWidget {
   final Widget widget;
   final Downloads movieData;
@@ -69,40 +71,56 @@ class VideoListItem extends StatelessWidget {
                             ),
                     ),
                   ),
-                 ValueListenableBuilder(
-                      valueListenable: likedVideoIdsNotifier,
-                      builder: (context, Set<int> newLikedListIds, Widget? _) {
-                        final _index = index;
-                        if (newLikedListIds.contains(_index)) {
-                          return GestureDetector(
-                            onTap: () {
-                              // BlocProvider.of<FastLaughBloc>(context)
-                              //     .add(UnlikedVideo(id: _index));
-                              likedVideoIdsNotifier.value.remove(_index);
-                              likedVideoIdsNotifier.notifyListeners();
-                            },
-                            child: VideoActionsWidget(
-                              icon: Icons.favorite,
-                              title: "Liked",
-                            ),
-                          );
-                        }
+                  ValueListenableBuilder(
+                    valueListenable: likedVideoIdsNotifier,
+                    builder: (context, Set<int> newLikedListIds, Widget? _) {
+                      final _index = index;
+                      if (newLikedListIds.contains(_index)) {
                         return GestureDetector(
                           onTap: () {
                             // BlocProvider.of<FastLaughBloc>(context)
-                            //     .add(LikedVideo(id: _index));
-                            likedVideoIdsNotifier.value.add(_index);
+                            //     .add(UnlikedVideo(id: _index));
+                            likedVideoIdsNotifier.value.remove(_index);
                             likedVideoIdsNotifier.notifyListeners();
                           },
                           child: VideoActionsWidget(
-                            icon: Icons.emoji_emotions,
-                            title: "LOL",
+                            icon: Icons.favorite,
+                            title: "Liked",
                           ),
                         );
-                      },
-                    ),
+                      }
+                      return GestureDetector(
+                        onTap: () {
+                          // BlocProvider.of<FastLaughBloc>(context)
+                          //     .add(LikedVideo(id: _index));
+                          likedVideoIdsNotifier.value.add(_index);
+                          likedVideoIdsNotifier.notifyListeners();
+                        },
+                        child: VideoActionsWidget(
+                          icon: Icons.emoji_emotions,
+                          title: "LOL",
+                        ),
+                      );
+                    },
+                  ),
                   VideoActionsWidget(icon: Icons.add, title: "My List"),
-                  VideoActionsWidget(icon: Icons.share, title: "Share"),
+                  GestureDetector(
+                    onTap: () {
+                      final movieName = VideoListItemInheritedWidget.of(context)
+                              ?.movieData
+                              .title ??
+                          VideoListItemInheritedWidget.of(context)!
+                              .movieData
+                              .name;
+                      if (movieName != null) {
+                        Share.share(movieName);
+                      }
+                    },
+                    child: VideoActionsWidget(
+                      icon: Icons.share,
+                      title: "Share",
+                    ),
+                  ),
                   VideoActionsWidget(icon: Icons.play_arrow, title: "Play"),
                 ],
               )
