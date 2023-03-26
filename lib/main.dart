@@ -5,6 +5,7 @@ import 'package:netflix/core/colors.dart';
 import 'package:netflix/domain/core/di/injectable.dart';
 import 'package:netflix/presentation/main_page/screen_main_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'application/search/search_bloc.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,13 +19,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) => getIt<DownloadsBloc>(),
-        ),
+        BlocProvider(create: (context) => getIt<DownloadsBloc>()),
+        BlocProvider(create: (context) => getIt<SearchBloc>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Netflix Clone',
         theme: ThemeData(
           textTheme: TextTheme(
             bodyLarge: GoogleFonts.montserrat(color: kWhiteColor),
