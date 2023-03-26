@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/application/search/search_bloc.dart';
 import 'package:netflix/presentation/search/widget/title.dart';
 
 class SearchResultWidget extends StatelessWidget {
@@ -19,16 +21,28 @@ class SearchResultWidget extends StatelessWidget {
                 ),
               ],
             ),
-            GridView.count(
-              crossAxisCount: 3,
-              shrinkWrap: true,
-              children: List.generate(
-                20,
-                (index) => const MainCard(),
-              ),
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-              childAspectRatio: 3 / 4,
+            BlocBuilder<SearchBloc, SearchState>(
+              builder: (context, state) {
+                return GridView.count(
+                  crossAxisCount: 3,
+                  shrinkWrap: true,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 3 / 4,
+                  children: List.generate(15, (index) {
+                    if (state.searchResultList.isEmpty) {
+                      return Center(
+                        child: Text("No results found"),
+                      );
+                    } else {
+                      final movie = state.searchResultList[index];
+                      return MainCard(
+                        imageUrl: movie.posterImageUrl,
+                      );
+                    }
+                  }),
+                );
+              },
             )
           ],
         ),
@@ -38,19 +52,20 @@ class SearchResultWidget extends StatelessWidget {
 }
 
 class MainCard extends StatelessWidget {
-  const MainCard({super.key});
+  final String imageUrl;
+  const MainCard({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        image: const DecorationImage(
-          fit: BoxFit.cover,
-          image: NetworkImage(
-              "https://lumiere-a.akamaihd.net/v1/images/mandalorian-poster-2_45ab56c3.jpeg?region=0,0,864,1280"),
-        ),
-      ),
+          borderRadius: BorderRadius.circular(7),
+          image: DecorationImage(
+              image: NetworkImage(imageUrl ==
+                      "https://image.tmdb.org/t/p/w500/null"
+                  ? "https://t3.ftcdn.net/jpg/03/34/83/22/360_F_334832255_IMxvzYRygjd20VlSaIAFZrQWjozQH6BQ.jpg"
+                  : imageUrl),
+              fit: BoxFit.cover)),
     );
   }
 }

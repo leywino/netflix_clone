@@ -31,18 +31,17 @@ class DownloadImageRotate extends StatelessWidget {
       child: Transform.rotate(
         angle: angle! * pi / 180,
         child: Container(
-              height: size.width * downloadHeight!,
-              width: size.width * downloadWidth!,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: kBlackColor,
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                      imageUrl!),
-                ),
-              ),
+          height: size.width * downloadHeight!,
+          width: size.width * downloadWidth!,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: kBlackColor,
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(imageUrl!),
             ),
+          ),
+        ),
       ),
     );
   }

@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:netflix/application/search/search_bloc.dart';
 import 'package:netflix/core/constants.dart';
 import 'package:netflix/presentation/search/widget/title.dart';
-
-const imageUrl =
-    "https://scontent.fcok14-1.fna.fbcdn.net/v/t1.6435-9/55485863_10157472280527275_7877149838259781632_n.jpg?stp=dst-jpg_p180x540&_nc_cat=111&ccb=1-7&_nc_sid=730e14&_nc_ohc=nP2GAV6TYfEAX9H8CYH&_nc_ht=scontent.fcok14-1.fna&oh=00_AfBLfP52N7BOKotN5a9pSOvWDvNn2HE9aJxBn7E_eOHhKA&oe=643E7311";
 
 class SearchIdleWidget extends StatelessWidget {
   const SearchIdleWidget({super.key});
@@ -16,16 +14,37 @@ class SearchIdleWidget extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
-          
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: SearchTitleWidget(title: "Top Searches"),
           ),
-          ListView.separated(
-              shrinkWrap: true,
-              itemBuilder: (context, index) => const TopSearchItemTile(),
-              separatorBuilder: (context, index) => kHeight,
-              itemCount: 10)
+          BlocBuilder<SearchBloc, SearchState>(
+            builder: (context, state) {
+              if (state.isLoading) {
+                return const CircularProgressIndicator();
+              } else if (state.isError) {
+                return const Center(
+                  child: Text("Error while getting data"),
+                );
+              } else if (state.idleList.isEmpty) {
+                return const Center(
+                  child: Text("List is empty"),
+                );
+              } else {
+                return ListView.separated(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final movie = state.idleList[index];
+                      return TopSearchItemTile(
+                          title: movie.title ?? movie.name ?? "No movie title",
+                          imageUrl: '$imageAppendUrl${movie.posterPath}');
+                    },
+                    separatorBuilder: (context, index) => kHeight,
+                    itemCount: state.idleList.length);
+              }
+            },
+          )
         ],
       ),
     ));
@@ -33,7 +52,11 @@ class SearchIdleWidget extends StatelessWidget {
 }
 
 class TopSearchItemTile extends StatelessWidget {
-  const TopSearchItemTile({super.key});
+  const TopSearchItemTile(
+      {super.key, required this.title, required this.imageUrl});
+
+  final String title;
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -48,28 +71,29 @@ class TopSearchItemTile extends StatelessWidget {
               height: screenWidth / 5.3,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                image: const DecorationImage(
+                image: DecorationImage(
                   fit: BoxFit.cover,
                   image: NetworkImage(imageUrl),
                 ),
               ),
             ),
             kWidth,
-            Container(
-              height: screenWidth / 5.3,
-              width: screenWidth / 2.2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Avengers: Endgame",
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: screenWidth / 2.5,
+                  child: Text(
+                    title,
+                    textAlign: TextAlign.start,
                     style: TextStyle(
                       fontWeight: FontWeight.w900,
                       fontSize: 15,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
