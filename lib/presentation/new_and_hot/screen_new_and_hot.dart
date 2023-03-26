@@ -263,87 +263,114 @@ class EveryonesWatchingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: 10,
-      shrinkWrap: true,
-      itemBuilder: (context, index) {
-        return Column(
-          children: [
-            Stack(
-              children: [
-                Image.network(
-                  "https://wallpapers.com/images/featured/dkttxahzpl44tbsa.jpg",
-                  fit: BoxFit.cover,
-                ),
-                Positioned(
-                  right: 5,
-                  bottom: 5,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.volume_off,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      BlocProvider.of<HotAndNewBloc>(context)
+          .add(const LoadDataInEveryOneWatching());
+    });
+    return BlocBuilder<HotAndNewBloc, HotAndNewState>(
+      builder: (context, state) {
+        if (state.isLoading) {
+          return const CircularProgressIndicator();
+        } else if (state.hasError) {
+          return const Center(
+            child: Text("Error while loading coming soon list"),
+          );
+        } else if (state.everyOneIsWatchingList.isEmpty) {
+          return const Center(
+            child: Text("Coming soon list is empty"),
+          );
+        } else {
+          return ListView.builder(
+            itemCount: state.everyOneIsWatchingList.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return Column(
                 children: [
-                  const Text(
-                    "Stranger Things",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Row(
+                  Stack(
                     children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.share,
-                          color: kWhiteColor,
-                        ),
+                      Image.network(
+                        state.everyOneIsWatchingList[index].backdropPath != null
+                            ? '$imageAppendUrl${state.everyOneIsWatchingList[index].backdropPath}'
+                            : "https://t3.ftcdn.net/jpg/03/34/83/22/360_F_334832255_IMxvzYRygjd20VlSaIAFZrQWjozQH6BQ.jpg",
+                        fit: BoxFit.cover,
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.add,
-                          color: kWhiteColor,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.play_arrow,
-                          color: kWhiteColor,
+                      Positioned(
+                        right: 5,
+                        bottom: 5,
+                        child: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.volume_off,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ],
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 250,
+                          child: Text(
+                            state.everyOneIsWatchingList[index].title ??
+                                state.everyOneIsWatchingList[index].name ??
+                                'no title',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.share,
+                                color: kWhiteColor,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.add,
+                                color: kWhiteColor,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                Icons.play_arrow,
+                                color: kWhiteColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      state.everyOneIsWatchingList[index].overview!,
+                      textAlign: TextAlign.start,
+                      // overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                  kHeight,
                 ],
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces in order to get him back.",
-                textAlign: TextAlign.start,
-                // overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
-                ),
-              ),
-            ),
-            kHeight,
-          ],
-        );
+              );
+            },
+          );
+        }
       },
     );
   }
