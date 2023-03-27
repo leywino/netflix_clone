@@ -36,7 +36,7 @@ class BottomNavigationWidget extends StatelessWidget {
                   label: "New & Hot"),
               BottomNavigationBarItem(
                 icon: Icon(Icons.sentiment_very_satisfied),
-                label: "Fast Laughs",
+                label: "Fast Laugh",
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.search),
