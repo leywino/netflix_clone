@@ -21,9 +21,11 @@ Downloads _$DownloadsFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Downloads {
   @JsonKey(name: "poster_path")
-  String? get posterPath => throw _privateConstructorUsedError;
+  String? get posterPath =>
+      throw _privateConstructorUsedError; 
   @JsonKey(name: "title")
-  String? get title => throw _privateConstructorUsedError;
+  String? get title =>
+      throw _privateConstructorUsedError; 
   @JsonKey(name: "name")
   String? get name => throw _privateConstructorUsedError;
 
@@ -134,12 +136,15 @@ class _$_Downloads implements _Downloads {
   factory _$_Downloads.fromJson(Map<String, dynamic> json) =>
       _$$_DownloadsFromJson(json);
 
+
   @override
   @JsonKey(name: "poster_path")
   final String? posterPath;
+
   @override
   @JsonKey(name: "title")
   final String? title;
+
   @override
   @JsonKey(name: "name")
   final String? name;
@@ -187,13 +192,13 @@ abstract class _Downloads implements Downloads {
   factory _Downloads.fromJson(Map<String, dynamic> json) =
       _$_Downloads.fromJson;
 
-  @override
+  @override 
   @JsonKey(name: "poster_path")
   String? get posterPath;
-  @override
+  @override 
   @JsonKey(name: "title")
   String? get title;
-  @override
+  @override 
   @JsonKey(name: "name")
   String? get name;
   @override
